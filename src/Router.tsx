@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LoginPage  from './pages/login/LoginPage';
+import AccessGuard from './components/AccesGuard';
 import DashboardPage from './pages/dashboard/DashboardPage';
+import LoginPage from './pages/login/LoginPage';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 
 const router = createBrowserRouter([
@@ -10,13 +11,16 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <DashboardPage />,
+    element: (
+      <AccessGuard>
+        <DashboardPage />
+      </AccessGuard>
+    ),
   },
-    {
+  {
     path: '*',
     element: <NotFoundPage />,
   },
-
 ]);
 
 export function Router() {
