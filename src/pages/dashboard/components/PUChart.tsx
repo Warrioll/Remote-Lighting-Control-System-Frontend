@@ -140,7 +140,9 @@ export default function PUChart() {
                 placeholder="Pick end date"
                 value={toDate}
                 onDateChange={setToDate}
-                onChange={setToDate}
+                onChange={(value: string | null) => {
+                  setToDate(value as string);
+                }}
                 valueFormat="DD MMM YYYY hh:mm:ss"
                 presets={datePresets}
               />
