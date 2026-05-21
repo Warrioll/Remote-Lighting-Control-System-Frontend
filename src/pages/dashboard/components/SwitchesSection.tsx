@@ -9,6 +9,7 @@ export default function SwitchesSection() {
   return (
     <Flex justify="center" w="100vw">
       <SimpleGrid
+        w='100%'
         m="xl"
         px="6rem"
         py="xl"

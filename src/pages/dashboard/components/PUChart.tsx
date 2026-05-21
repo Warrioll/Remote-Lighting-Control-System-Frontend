@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AreaChart } from '@mantine/charts';
-import { Box, Button, Flex, Input, Paper, Stack } from '@mantine/core';
+import { Box, Button, Flex, Input, Paper, Stack , Title} from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { getPowerUsageData } from '@/api/powerUsage';
 
@@ -199,6 +199,7 @@ export default function PUChart() {
       <Box m="xl" px="xl" pt="md" maw="100vw">
         {puData.length > 0 ? (
           <Box pr="4rem">
+            <Flex justify='center'my='md' ><Title fz='1.5rem' c='dimmed' >Raw value</Title></Flex>
             <AreaChart
               h={300}
               data={puData}
@@ -209,6 +210,46 @@ export default function PUChart() {
               tickLine="xy"
               gridAxis="xy"
               yAxisProps={{ domain: [2800, 3300] }}
+            />
+             <Flex justify='center'my='md' mt='5rem' ><Title fz='1.5rem' c='dimmed' >Voltage</Title></Flex>
+            <AreaChart
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'voltage', color: 'blue.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              yAxisProps={{ domain: [2.25, 2.75] }}
+              unit='V'
+            />
+            <Flex justify='center'my='md' mt='5rem' ><Title fz='1.5rem' c='dimmed' >Current</Title></Flex>
+                        <AreaChart
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'current', color: 'yellow.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              unit='A'
+              yAxisProps={{ domain: [0.02, 0.03] }}
+            />
+
+            <Flex justify='center'my='md' mt='rem' ><Title fz='1.5rem' c='dimmed' >Power</Title></Flex>
+            <AreaChart
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'power', color: 'red.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              unit='W'
+              yAxisProps={{ domain: [0.04, 0.08] }}
             />
           </Box>
         ) : (

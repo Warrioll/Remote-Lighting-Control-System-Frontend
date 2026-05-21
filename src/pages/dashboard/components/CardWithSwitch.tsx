@@ -17,7 +17,7 @@ export default function CardWithSwitch({title,   switchId}:CardWithSwitchProps){
     const handleToggle = (event: React.ChangeEvent<HTMLInputElement>)=>{
      const switchState=event.currentTarget.checked
 
-         toast.promise(  putSwitchMode(1,  switchState ? 'ON' : 'OFF'),
+         toast.promise(  putSwitchMode(switchId,  switchState ? 'ON' : 'OFF'),
       {
         loading:  switchState ? `Turning on LED ${switchId}...` :  `Turning off LED ${switchId}...`,
         success:  switchState ? <b>LED {switchId} turned on!</b> :  <b>LED {switchId} turned off!</b>,

@@ -25,7 +25,7 @@ export default function DashboardPage() {
         // style={{ borderRadius: 'var(--mantine-radius-md)' }}
         // bd="1px solid var(--mantine-color-lime-5)"
       >
-        <Title>Welcome to your dashboard!</Title>
+        <Title c='var(--mantine-color-lime-8'>Welcome to your dashboard!</Title>
       </Flex>
 
       <SwitchesSection />
