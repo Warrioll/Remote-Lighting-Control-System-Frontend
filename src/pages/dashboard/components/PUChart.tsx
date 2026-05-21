@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AreaChart } from '@mantine/charts';
@@ -40,16 +40,16 @@ export const data = [
 ];
 
 export default function PUChart() {
-  const fromDateToPickerFormatter = new Intl.DateTimeFormat('pl-PL', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-    timeZone: 'Europe/Warsaw',
-  });
+  // const fromDateToPickerFormatter = new Intl.DateTimeFormat('pl-PL', {
+  //   year: 'numeric',
+  //   month: '2-digit',
+  //   day: '2-digit',
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  //   second: '2-digit',
+  //   hour12: false,
+  //   timeZone: 'Europe/Warsaw',
+  // });
 
   const [puData, setPuData] = useState<{ value: number; time: string }[]>([]);
   const [fromDate, setFromDate] = useState<string>(
@@ -126,7 +126,7 @@ export default function PUChart() {
                 placeholder="Pick start date"
                 value={fromDate}
                 onDateChange={setFromDate}
-                onChange={setFromDate}
+                onChange={(value)=>{setFromDate(value as string)}}
                 valueFormat="DD MMM YYYY hh:mm:ss"
                 presets={datePresets}
               />
@@ -165,7 +165,7 @@ export default function PUChart() {
             placeholder="Pick start date"
             value={fromDate}
             onDateChange={setFromDate}
-            onChange={setFromDate}
+            onChange={(value)=>{setFromDate(value as string)}}
             valueFormat="DD MMM YYYY hh:mm:ss"
             presets={datePresets}
             label="From"
