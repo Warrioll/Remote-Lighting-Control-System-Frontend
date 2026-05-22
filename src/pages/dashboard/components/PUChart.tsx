@@ -1,42 +1,48 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AreaChart } from '@mantine/charts';
-import { Box, Button, Flex, Input, Paper, Stack , Title} from '@mantine/core';
+import { Box, Button, Flex, Input, Paper, Stack, Title } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { getPowerUsageData } from '@/api/powerUsage';
 
-export const data = [
+const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+const midnight = tomorrow.setHours(0, 0, 0, 0);
+
+const datePresets = [
+  // {
+  //   value: new Date(midnight).toLocaleString('sv-SE'),
+  //   label: 'Midnight',
+  // },
   {
-    date: 'Martttttttttttttttttttttttttmcyliv 22',
-    Apples: 2890,
-    Oranges: 2338,
-    Tomatoes: 2452,
+    value: new Date(Date.now()).toLocaleString('sv-SE'),
+    label: 'Now',
+  },
+
+  {
+    value: new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleString('sv-SE'),
+    label: '24h ago',
   },
   {
-    date: 'Mar 23',
-    Apples: 2756,
-    Oranges: 2103,
-    Tomatoes: 2402,
+    value: new Date(Date.now() - 48 * 60 * 60 * 1000).toLocaleString('sv-SE'),
+    label: '48h ago',
   },
   {
-    date: 'Mar 24',
-    Apples: 3322,
-    Oranges: 986,
-    Tomatoes: 1821,
+    value: new Date(Date.now() - 72 * 60 * 60 * 1000).toLocaleString('sv-SE'),
+    label: '72h ago',
   },
   {
-    date: 'Mar 25',
-    Apples: 3470,
-    Oranges: 2108,
-    Tomatoes: 2809,
+    value: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleString('sv-SE'),
+    label: 'Last week',
   },
   {
-    date: 'Mar 26',
-    Apples: 3129,
-    Oranges: 1726,
-    Tomatoes: 2290,
+    value: new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleString('sv-SE'),
+    label: 'Last month',
   },
+  // {
+  //   value: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toLocaleString('sv-SE'),
+  //   label: 'Last year',
+  // },
 ];
 
 export default function PUChart() {
@@ -52,19 +58,18 @@ export default function PUChart() {
   // });
 
   const [puData, setPuData] = useState<{ value: number; time: string }[]>([]);
+
   const [fromDate, setFromDate] = useState<string>(
-    new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleString('sv-SE')
+    new Date(midnight - 24 * 60 * 60 * 1000).toLocaleString('sv-SE')
   );
   // console.log(
   //   fromDateToPickerFormatter.format(new Date(Date.now() - 24 * 60 * 60 * 1000)).replace(',', '')
   // );
-  const [toDate, setToDate] = useState<string>(new Date(Date.now()).toLocaleString('sv-SE'));
+  const [toDate, setToDate] = useState<string>(new Date(midnight).toLocaleString('sv-SE'));
 
   const getDataForChart = async () => {
     toast.promise(
       async () => {
-        console.log(fromDate);
-        console.log(toDate);
         const data = await getPowerUsageData(
           // new Date(Date.now() - 168 * 60 * 60 * 1000),
           // new Date(Date.now())
@@ -73,6 +78,7 @@ export default function PUChart() {
           new Date(toDate.replace(' ', 'T'))
         );
         setPuData(data);
+        console.log('data: ', data);
       },
       {
         loading: `loading data...`,
@@ -84,25 +90,21 @@ export default function PUChart() {
     );
   };
 
-  const datePresets = [
-    { value: new Date(Date.now()).toLocaleString('sv-SE'), label: 'Today' },
-    {
-      value: new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleString('sv-SE'),
-      label: 'Yesterday',
-    },
-    {
-      value: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleString('sv-SE'),
-      label: 'Last week',
-    },
-    {
-      value: new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleString('sv-SE'),
-      label: 'Last month',
-    },
-    {
-      value: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toLocaleString('sv-SE'),
-      label: 'Last year',
-    },
-  ];
+  useEffect(() => {
+    const setDevise = async () => {
+      try {
+        const data = await getPowerUsageData(
+          new Date(fromDate.replace(' ', 'T')),
+          new Date(toDate.replace(' ', 'T'))
+        );
+        setPuData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setDevise();
+  }, []);
 
   return (
     <Paper maw="100vw" mx="5rem" m="0px" mb="xl" withBorder>
@@ -126,7 +128,9 @@ export default function PUChart() {
                 placeholder="Pick start date"
                 value={fromDate}
                 onDateChange={setFromDate}
-                onChange={(value)=>{setFromDate(value as string)}}
+                onChange={(value) => {
+                  setFromDate(value as string);
+                }}
                 valueFormat="DD MMM YYYY hh:mm:ss"
                 presets={datePresets}
               />
@@ -165,7 +169,9 @@ export default function PUChart() {
             placeholder="Pick start date"
             value={fromDate}
             onDateChange={setFromDate}
-            onChange={(value)=>{setFromDate(value as string)}}
+            onChange={(value) => {
+              setFromDate(value as string);
+            }}
             valueFormat="DD MMM YYYY hh:mm:ss"
             presets={datePresets}
             label="From"
@@ -178,7 +184,9 @@ export default function PUChart() {
             placeholder="Pick end date"
             value={toDate}
             onDateChange={setToDate}
-            onChange={(value)=>{setToDate(value as string)}}
+            onChange={(value) => {
+              setToDate(value as string);
+            }}
             valueFormat="DD MMM YYYY hh:mm:ss"
             presets={datePresets}
           />
@@ -199,33 +207,29 @@ export default function PUChart() {
       <Box m="xl" px="xl" pt="md" maw="100vw">
         {puData.length > 0 ? (
           <Box pr="4rem">
-            <Flex justify='center'my='md' ><Title fz='1.5rem' c='dimmed' >Raw value</Title></Flex>
+            <Flex justify="center" my="md">
+              <Title fz="1.5rem" c="dimmed">
+                Voltage
+              </Title>
+            </Flex>
             <AreaChart
               h={300}
               data={puData}
               dataKey="time"
-              series={[{ name: 'value', color: 'lime.6' }]}
-              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
-              curveType="linear"
-              tickLine="xy"
-              gridAxis="xy"
-              yAxisProps={{ domain: [2800, 3300] }}
-            />
-             <Flex justify='center'my='md' mt='5rem' ><Title fz='1.5rem' c='dimmed' >Voltage</Title></Flex>
-            <AreaChart
-              h={300}
-              data={puData}
-              dataKey="time"
-              series={[{ name: 'voltage', color: 'blue.6' }]}
+              series={[{ name: 'voltage', color: 'lime.6' }]}
               xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
               curveType="linear"
               tickLine="xy"
               gridAxis="xy"
               yAxisProps={{ domain: [2.25, 2.75] }}
-              unit='V'
+              unit="V"
             />
-            <Flex justify='center'my='md' mt='5rem' ><Title fz='1.5rem' c='dimmed' >Current</Title></Flex>
-                        <AreaChart
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Current
+              </Title>
+            </Flex>
+            <AreaChart
               h={300}
               data={puData}
               dataKey="time"
@@ -234,11 +238,15 @@ export default function PUChart() {
               curveType="linear"
               tickLine="xy"
               gridAxis="xy"
-              unit='A'
+              unit="A"
               yAxisProps={{ domain: [0.02, 0.03] }}
             />
 
-            <Flex justify='center'my='md' mt='rem' ><Title fz='1.5rem' c='dimmed' >Power</Title></Flex>
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Power
+              </Title>
+            </Flex>
             <AreaChart
               h={300}
               data={puData}
@@ -248,8 +256,24 @@ export default function PUChart() {
               curveType="linear"
               tickLine="xy"
               gridAxis="xy"
-              unit='W'
+              unit="W"
               yAxisProps={{ domain: [0.04, 0.08] }}
+            />
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Raw value
+              </Title>
+            </Flex>
+            <AreaChart
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'value', color: 'blue.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              yAxisProps={{ domain: [1400, 1600] }}
             />
           </Box>
         ) : (

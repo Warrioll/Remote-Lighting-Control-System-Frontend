@@ -7,4 +7,5 @@ export const theme = createTheme({
       mainColor: colorsTuple('var(--mantine-color-lime-5)'),
       
     },
+    fontFamily: "\"Poppins\", ui-sans-serif, system-ui, sans-serif"
 });

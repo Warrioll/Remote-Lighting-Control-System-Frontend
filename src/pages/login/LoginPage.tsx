@@ -1,12 +1,10 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import {
-  Anchor,
   Box,
   Button,
-  Checkbox,
   Container,
-  Group,
   Paper,
   PasswordInput,
   Text,
@@ -15,33 +13,30 @@ import {
 } from '@mantine/core';
 import { logIn } from '@/api/auth';
 import classes from './LoginPage.module.css';
-import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const [data, setData] = useState<{ username: string; pass: string }>({ username: '', pass: '' });
-  const [blocked, setBlocked] = useState<boolean>(false)
+  const [blocked, setBlocked] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const login = async () => {
     try {
-      toast.promise( logIn(data.username, data.pass),
-      {
+      toast.promise(logIn(data.username, data.pass), {
         loading: 'Authentication...',
-        success: ()=>{
-                  setBlocked(false)
-                  navigate('dashboard');
-          return <b>Logged in succesfully!</b>
+        success: () => {
+          setBlocked(false);
+          navigate('dashboard');
+          return <b>Logged in succesfully!</b>;
         },
         error: (err) => {
-      const status = err?.response?.status;
-      setBlocked(false)
-      if (status === 401) {
-        return <b>Username or password is incorrect!</b>;
-      }      
-      return <b>Could not login.</b>;
-      }
-      }
-      );
+          const status = err?.response?.status;
+          setBlocked(false);
+          if (status === 401) {
+            return <b>Username or password is incorrect!</b>;
+          }
+          return <b>Could not login.</b>;
+        },
+      });
     } catch (error) {
       console.log(error);
     }
@@ -50,11 +45,13 @@ export default function LoginPage() {
   return (
     <Box className={classes.bg}>
       <Container size={420} my={40}>
-        <Title ta="center" className={classes.title}>
+        <Title ta="center" className={classes.title} c="white" fw="bold">
           Welcome!
         </Title>
 
-        <Text className={classes.subtitle}>This is private IoT dashboard project.</Text>
+        <Text className={classes.subtitle} c="white">
+          This is private IoT dashboard project.
+        </Text>
 
         <Paper withBorder shadow="lg" p={22} mt={30} radius="md">
           <TextInput
@@ -74,7 +71,15 @@ export default function LoginPage() {
             required
             mt="md"
           />
-          <Button fullWidth mt="xl" onClick={()=>{setBlocked(true);login()}} disabled={blocked}>
+          <Button
+            fullWidth
+            mt="xl"
+            onClick={() => {
+              setBlocked(true);
+              login();
+            }}
+            disabled={blocked}
+          >
             Sign in
           </Button>
         </Paper>
