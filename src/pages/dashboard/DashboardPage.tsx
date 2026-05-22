@@ -75,7 +75,7 @@ export default function DashboardPage() {
           </Box>
           <Box
             bg="var(--mantine-color-gray-1)"
-            pt="10rem"
+            pt="13rem"
             mt="-20vh"
             style={{ borderTop: '2px solid var(--mantine-color-gray-3)' }}
           >
