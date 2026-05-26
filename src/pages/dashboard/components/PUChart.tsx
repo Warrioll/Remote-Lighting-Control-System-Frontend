@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AreaChart } from '@mantine/charts';
-import { Box, Button, Flex, Input, Paper, Stack, Title } from '@mantine/core';
+import { Box, Button, Flex, Input, Paper, Stack, Title, ScrollArea } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { getPowerUsageData } from '@/api/powerUsage';
 
@@ -78,7 +78,7 @@ export default function PUChart() {
           new Date(toDate.replace(' ', 'T'))
         );
         setPuData(data);
-        console.log('data: ', data);
+        // console.log('data: ', data);
       },
       {
         loading: `loading data...`,
@@ -106,8 +106,8 @@ export default function PUChart() {
     setDevise();
   }, []);
 
-  return (
-    <Paper maw="100vw" mx="5rem" m="0px" mb="xl" withBorder>
+  return (<>
+    <Paper maw="100vw" visibleFrom='sm' mx='5rem' m="0px" mb="xl" withBorder>
       <Box //Paper
         mx={{ sm: '7rem', base: 'xs' }}
         my="xl"
@@ -291,5 +291,206 @@ export default function PUChart() {
         )}
       </Box>
     </Paper>
+
+        <Paper maw="100vw" hiddenFrom='sm' mx='1rem' m="0px" mb="xl" withBorder>
+      <Box //Paper
+        mx={{ sm: '7rem', base: 'xs' }}
+        my="xl"
+        //px="5rem"
+        // mb="md"
+        // withBorder
+        // p="md"
+        // bg="var(--mantine-color-lime-4)"
+      >
+        <Flex visibleFrom="sm" justify="space-between" align="center">
+          <Flex>
+            <Flex align="center" mx="lg">
+              <Input.Label mr="sm">From</Input.Label>
+              <DateTimePicker
+                w="12rem"
+                variant="filled"
+                withSeconds
+                placeholder="Pick start date"
+                value={fromDate}
+                onDateChange={setFromDate}
+                onChange={(value) => {
+                  setFromDate(value as string);
+                }}
+                valueFormat="DD MMM YYYY hh:mm:ss"
+                presets={datePresets}
+              />
+            </Flex>
+            <Flex align="center" mx="lg">
+              <Input.Label mr="sm">To</Input.Label>{' '}
+              <DateTimePicker
+                w="12rem"
+                variant="filled"
+                withSeconds
+                placeholder="Pick end date"
+                value={toDate}
+                onDateChange={setToDate}
+                onChange={(value: string | null) => {
+                  setToDate(value as string);
+                }}
+                valueFormat="DD MMM YYYY hh:mm:ss"
+                presets={datePresets}
+              />
+            </Flex>
+          </Flex>
+
+          <Button
+            onClick={getDataForChart}
+            leftSection={<RefreshCw color="white" size={18} strokeWidth={2.75} />}
+          >
+            Load
+          </Button>
+        </Flex>
+
+        <Stack hiddenFrom="sm" justify="space-between" align="center">
+          <DateTimePicker
+            dropdownType='modal'
+            w="12rem"
+            variant="filled"
+            withSeconds
+            placeholder="Pick start date"
+            value={fromDate}
+            onDateChange={setFromDate}
+            onChange={(value) => {
+              setFromDate(value as string);
+            }}
+            valueFormat="DD MMM YYYY hh:mm:ss"
+            presets={datePresets}
+            label="From"
+          />
+          <DateTimePicker
+           dropdownType='modal'
+            label="To"
+            w="12rem"
+            variant="filled"
+            withSeconds
+            placeholder="Pick end date"
+            value={toDate}
+            onDateChange={setToDate}
+            onChange={(value) => {
+              setToDate(value as string);
+            }}
+            valueFormat="DD MMM YYYY hh:mm:ss"
+            presets={datePresets}
+          />
+
+          <Button
+            w="12rem"
+            variant="light"
+            onClick={getDataForChart}
+            leftSection={
+              <RefreshCw color="var(--mantine-color-lime-6)" size={18} strokeWidth={2.75} />
+            }
+          >
+            Refresh
+          </Button>
+        </Stack>
+      </Box>
+
+      <Box m="0px" px="0px" pt="md" maw="100vw">
+       
+        {puData.length > 0 ? (
+          <Box >
+            <Flex justify="center" my="md">
+              <Title fz="1.5rem" c="dimmed">
+                Voltage
+              </Title>
+            </Flex>
+             <ScrollArea>
+            <AreaChart
+             miw='50rem'
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'voltage', color: 'lime.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              yAxisProps={{ domain: [2.25, 2.75] }}
+              unit="V"
+            />
+            </ScrollArea>
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Current
+              </Title>
+            </Flex>
+            <ScrollArea>
+            <AreaChart
+             miw='50rem'
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'current', color: 'yellow.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              unit="A"
+              yAxisProps={{ domain: [0.02, 0.03] }}
+            />
+  </ScrollArea>
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Power
+              </Title>
+            </Flex>
+            <ScrollArea>
+            <AreaChart
+             miw='50rem'
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'power', color: 'red.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              unit="W"
+              yAxisProps={{ domain: [0.04, 0.08] }}
+            />
+            </ScrollArea>
+            <Flex justify="center" my="md" mt="6rem">
+              <Title fz="1.5rem" c="dimmed">
+                Raw value
+              </Title>
+            </Flex>
+            <ScrollArea>
+            <AreaChart
+             miw='50rem'
+              h={300}
+              data={puData}
+              dataKey="time"
+              series={[{ name: 'value', color: 'blue.6' }]}
+              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
+              curveType="linear"
+              tickLine="xy"
+              gridAxis="xy"
+              yAxisProps={{ domain: [1400, 1600] }}
+            />
+            </ScrollArea>
+          </Box>
+        ) : (
+          <Flex
+            justify="center"
+            align="center"
+            c="dimmed"
+            style={{ borderRadius: 'var(--mantine-radius-md)' }}
+            bd=" 2px solid var(--mantine-color-gray-3)"
+            h={300}
+            mx="xl"
+            ta='center'
+          >
+            <b>No data recorded in the selected time period </b>
+          </Flex>
+        )}
+      </Box>
+    </Paper>
+    </>
   );
 }

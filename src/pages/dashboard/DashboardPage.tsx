@@ -47,7 +47,7 @@ export default function DashboardPage() {
               style={{ marginTop: '10px', marginRight: ' 15px' }}
             /> */}
 
-            <Title c="white" fz="4rem" mr="0px">
+            <Title c="white" fz={{sm: "4rem", base: '2rem'}} mr="0px">
               Welcome to your IoT dashboard!
             </Title>
           </Flex>
