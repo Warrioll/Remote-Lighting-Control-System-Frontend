@@ -4,10 +4,19 @@ import { putSwitchMode } from '@/api/switch';
 import PUChart from './components/PUChart';
 import SwitchesSection from './components/SwitchesSection';
 import classes from './DashboardPage.module.css';
+import { io,Socket  } from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import type { DefaultEventsMap } from '@socket.io/component-emitter';
+import { DeviceStateProvider } from '@/DeviceStateContextProvider';
+
+
+const BACKENDURL = import.meta.env.VITE_BACKEND_URL as string
+
 
 export default function DashboardPage() {
+
   return (
-    <>
+    <DeviceStateProvider>
       <Box
         w="100%"
         h="100%"
@@ -16,9 +25,9 @@ export default function DashboardPage() {
         mt="0px"
         maw="100vw"
         style={{ overflowX: 'hidden' }}
-        //className={classes.bg}
+       
       >
-        {/* <Flex w="100vw" ta="center" bg="red" justify="center"> */}
+       
         <Stack
           h="70vh"
           w="100vw"
@@ -26,28 +35,20 @@ export default function DashboardPage() {
           ta="center"
           my="lg"
           mt="0px"
-          //mx="10vw"
+        
           justify="center"
           align="center"
-          //bg="var(--mantine-color-lime-7)"
+       
           pos="fixed"
           className={classes.bg}
           style={{
-            //borderRadius: 'var(--mantine-radius-md)',
-            //background: `linear-gradient(to bottom,var(--mantine-color-lime-9), var(--mantine-color-lime-7), var(--mantine-color-lime-6),  var(--mantine-color-lime-2)`,
+          
             zIndex: 1,
           }}
-          // bd="1px solid var(--mantine-color-lime-5)"
+    
         >
           <Flex justify="center" w="100%">
-            {/* <HouseWifi
-              color="#ffffff"
-              size={68}
-              strokeWidth={2.5}
-              style={{ marginTop: '10px', marginRight: ' 15px' }}
-            /> */}
-
-            <Title c="white" fz={{sm: "4rem", base: '2rem'}} mr="0px">
+            <Title c="white" fz={{sm: "4rem", base: '2rem', xxl:'7rem'}} mr="0px">
               Welcome to your IoT dashboard!
             </Title>
           </Flex>
@@ -70,13 +71,13 @@ export default function DashboardPage() {
             }
             color="white"
           /> */}
-          <Box mt="-50px">
+          <Box mt={{md:"-50px", base: '-8rem'}}>
             <SwitchesSection />
           </Box>
           <Box
             bg="var(--mantine-color-gray-1)"
-            pt="13rem"
-            mt="-20vh"
+            pt={{base: '28rem',md:"13rem"}}
+            mt={{base: "-50vh", md: '-20vh', xxl: '-10vh'}}
             style={{ borderTop: '2px solid var(--mantine-color-gray-3)' }}
           >
             {/* <Divider my="xl" mx="5rem" size="sm" label="Charts" /> */}
@@ -84,6 +85,6 @@ export default function DashboardPage() {
           </Box>
         </Box>
       </Box>
-    </>
+    </DeviceStateProvider>
   );
 }

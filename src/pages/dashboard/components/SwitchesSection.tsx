@@ -6,13 +6,26 @@ import { getDeviceStatus } from '@/api/deviceStatus';
 import { putSwitchMode } from '@/api/switch';
 import CardWithSwitch from './CardWithSwitch';
 import CustomCard from './CustomCard';
+import { Socket  } from 'socket.io-client';
+import type { DefaultEventsMap } from '@socket.io/component-emitter';
+import { useDeviceState } from '@/DeviceStateContextProvider';
 
-export default function SwitchesSection() {
+type SwitchesSectionProps={
+  socket: Socket<DefaultEventsMap, DefaultEventsMap> | null
+}
+
+export default function SwitchesSection(//{socket}: SwitchesSectionProps
+
+) {
   const [deviceStatus, setDeviceStatus] = useState<{
     isConnected: boolean;
     sitch1status: boolean;
     switch2status: boolean;
   } | null>(null);
+
+
+  
+    const { isConnected, setIsConnected, socket } = useDeviceState()
 
   const getEsp32Status = async () => {
     try {
@@ -37,26 +50,12 @@ export default function SwitchesSection() {
     }
   };
 
-  // useEffect(() => {
-  //   console.log('hehe: ', deviceStatus);
-  //   if (deviceStatus) {
-  //     if (deviceStatus?.isConnected) {
-  //       toast.success('Device is connected!');
-  //     } else {
-  //       toast.error('Device is not connected!');
-  //     }
-  //   }
-  // }, [releaseConnectionToast]);
+
 
   return (
     <Flex justify="center" w="100vw">
-      <SimpleGrid w="100%" m="xl" px="6rem" py="xl" cols={{ base: 1, sm: 2, lg: 3 }}>
-        <Flex w="100%" justify="center">
-          <CardWithSwitch title="led 1" switchId={1} />
-        </Flex>
-        <Flex w="100%" justify="center">
-          <CardWithSwitch title="led 2" switchId={2} />
-        </Flex>
+      <SimpleGrid w="100%" m="xl" px="6rem" py="xl" cols={{ base: 1, md: 2, lg: 3 }}>
+
         <Flex w="100%" justify="center">
           <CustomCard title="Device" label="Chceck connection with device">
             <Stack
@@ -65,33 +64,29 @@ export default function SwitchesSection() {
               align="center"
               justify="center"
               px="xl"
-              pt="1.3rem"
+              pt="0.5rem"
               pb="xs"
               gap="0px"
             >
-              {deviceStatus?.isConnected ? (
-                <Badge color="green" w="8rem" h="1.5rem">
+              {isConnected ? (
+                <Badge color="green" w="9rem" h="2rem" size='lg'>
                   CONNECTED
                 </Badge>
               ) : (
-                <Badge color="red" w="8rem" h="1.5rem">
+                <Badge color="red" w="9rem" h="2rem" size='lg'>
                   DISCONNECTED
                 </Badge>
               )}
-              <Button
-                m="xs"
-                mt="10px"
-                leftSection={<RefreshCw size={14} strokeWidth={2.75} />}
-                size="xs"
-                p="0.5rem"
-                py="0px"
-                variant="transparent"
-                onClick={getEsp32Status}
-              >
-                Check connection
-              </Button>
             </Stack>
           </CustomCard>
+        </Flex>
+                <Flex w="100%" justify="center">
+          <CardWithSwitch title="led 1" switchId={1} //socket={socket} 
+          />
+        </Flex>
+        <Flex w="100%" justify="center">
+          <CardWithSwitch title="led 2" switchId={2} //socket={socket} 
+          />
         </Flex>
       </SimpleGrid>
     </Flex>

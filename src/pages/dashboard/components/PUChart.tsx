@@ -207,23 +207,6 @@ export default function PUChart() {
       <Box m="xl" px="xl" pt="md" maw="100vw">
         {puData.length > 0 ? (
           <Box pr="4rem">
-            <Flex justify="center" my="md">
-              <Title fz="1.5rem" c="dimmed">
-                Voltage
-              </Title>
-            </Flex>
-            <AreaChart
-              h={300}
-              data={puData}
-              dataKey="time"
-              series={[{ name: 'voltage', color: 'lime.6' }]}
-              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
-              curveType="linear"
-              tickLine="xy"
-              gridAxis="xy"
-              yAxisProps={{ domain: [2.25, 2.75] }}
-              unit="V"
-            />
             <Flex justify="center" my="md" mt="6rem">
               <Title fz="1.5rem" c="dimmed">
                 Current
@@ -233,31 +216,13 @@ export default function PUChart() {
               h={300}
               data={puData}
               dataKey="time"
-              series={[{ name: 'current', color: 'yellow.6' }]}
+              series={[{ name: 'current', color: 'lime.6' }]}
               xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
               curveType="linear"
               tickLine="xy"
               gridAxis="xy"
               unit="A"
               yAxisProps={{ domain: [0.02, 0.03] }}
-            />
-
-            <Flex justify="center" my="md" mt="6rem">
-              <Title fz="1.5rem" c="dimmed">
-                Power
-              </Title>
-            </Flex>
-            <AreaChart
-              h={300}
-              data={puData}
-              dataKey="time"
-              series={[{ name: 'power', color: 'red.6' }]}
-              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
-              curveType="linear"
-              tickLine="xy"
-              gridAxis="xy"
-              unit="W"
-              yAxisProps={{ domain: [0.04, 0.08] }}
             />
             <Flex justify="center" my="md" mt="6rem">
               <Title fz="1.5rem" c="dimmed">
@@ -268,7 +233,7 @@ export default function PUChart() {
               h={300}
               data={puData}
               dataKey="time"
-              series={[{ name: 'value', color: 'blue.6' }]}
+              series={[{ name: 'value', color: 'red.6' }]}
               xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
               curveType="linear"
               tickLine="xy"
@@ -292,7 +257,7 @@ export default function PUChart() {
       </Box>
     </Paper>
 
-        <Paper maw="100vw" hiddenFrom='sm' mx='1rem' m="0px" mb="xl" withBorder>
+        <Paper maw="100vw" hiddenFrom='sm' mx='0rem' m="0px" mb="xl"  radius='0px' withBorder>
       <Box //Paper
         mx={{ sm: '7rem', base: 'xs' }}
         my="xl"
@@ -341,15 +306,16 @@ export default function PUChart() {
           <Button
             onClick={getDataForChart}
             leftSection={<RefreshCw color="white" size={18} strokeWidth={2.75} />}
+        
           >
             Load
           </Button>
         </Flex>
 
-        <Stack hiddenFrom="sm" justify="space-between" align="center">
+        <Stack hiddenFrom="sm" justify="space-between" align="center" px='10%'>
           <DateTimePicker
             dropdownType='modal'
-            w="12rem"
+            w="100%"
             variant="filled"
             withSeconds
             placeholder="Pick start date"
@@ -365,7 +331,7 @@ export default function PUChart() {
           <DateTimePicker
            dropdownType='modal'
             label="To"
-            w="12rem"
+            w="100%"
             variant="filled"
             withSeconds
             placeholder="Pick end date"
@@ -379,7 +345,7 @@ export default function PUChart() {
           />
 
           <Button
-            w="12rem"
+            w="100%"
             variant="light"
             onClick={getDataForChart}
             leftSection={
@@ -395,26 +361,6 @@ export default function PUChart() {
        
         {puData.length > 0 ? (
           <Box >
-            <Flex justify="center" my="md">
-              <Title fz="1.5rem" c="dimmed">
-                Voltage
-              </Title>
-            </Flex>
-             <ScrollArea>
-            <AreaChart
-             miw='50rem'
-              h={300}
-              data={puData}
-              dataKey="time"
-              series={[{ name: 'voltage', color: 'lime.6' }]}
-              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
-              curveType="linear"
-              tickLine="xy"
-              gridAxis="xy"
-              yAxisProps={{ domain: [2.25, 2.75] }}
-              unit="V"
-            />
-            </ScrollArea>
             <Flex justify="center" my="md" mt="6rem">
               <Title fz="1.5rem" c="dimmed">
                 Current
@@ -424,9 +370,10 @@ export default function PUChart() {
             <AreaChart
              miw='50rem'
               h={300}
+              mx='10px'
               data={puData}
               dataKey="time"
-              series={[{ name: 'current', color: 'yellow.6' }]}
+              series={[{ name: 'current', color: 'lime.6' }]}
               xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
               curveType="linear"
               tickLine="xy"
@@ -435,26 +382,7 @@ export default function PUChart() {
               yAxisProps={{ domain: [0.02, 0.03] }}
             />
   </ScrollArea>
-            <Flex justify="center" my="md" mt="6rem">
-              <Title fz="1.5rem" c="dimmed">
-                Power
-              </Title>
-            </Flex>
-            <ScrollArea>
-            <AreaChart
-             miw='50rem'
-              h={300}
-              data={puData}
-              dataKey="time"
-              series={[{ name: 'power', color: 'red.6' }]}
-              xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
-              curveType="linear"
-              tickLine="xy"
-              gridAxis="xy"
-              unit="W"
-              yAxisProps={{ domain: [0.04, 0.08] }}
-            />
-            </ScrollArea>
+            
             <Flex justify="center" my="md" mt="6rem">
               <Title fz="1.5rem" c="dimmed">
                 Raw value
@@ -462,11 +390,13 @@ export default function PUChart() {
             </Flex>
             <ScrollArea>
             <AreaChart
+            mx='10px'
+            mb='3rem'
              miw='50rem'
               h={300}
               data={puData}
               dataKey="time"
-              series={[{ name: 'value', color: 'blue.6' }]}
+              series={[{ name: 'value', color: 'red.6' }]}
               xAxisProps={{ interval: 'preserveStartEnd', minTickGap: 35 }}
               curveType="linear"
               tickLine="xy"

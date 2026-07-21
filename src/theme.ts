@@ -3,7 +3,9 @@ import { createTheme, colorsTuple } from '@mantine/core';
 export const theme = createTheme({
   primaryColor: 'mainColor',
   defaultRadius: 'md',
-  //  breakpoints: {
+    breakpoints: {
+    xxl: '130rem'
+    },
   //   xs: '30em',
   //   sm: '48em',
   //   md: '64em',
