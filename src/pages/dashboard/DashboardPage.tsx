@@ -77,7 +77,7 @@ export default function DashboardPage() {
           <Box
             bg="var(--mantine-color-gray-1)"
             pt={{base: '28rem',md:"13rem"}}
-            mt={{base: "-50vh", md: '-20vh', xxl: '-10vh'}}
+            mt={{base: "-55vh", md: '-20vh', xxl: '-10vh'}}
             style={{ borderTop: '2px solid var(--mantine-color-gray-3)' }}
           >
             {/* <Divider my="xl" mx="5rem" size="sm" label="Charts" /> */}

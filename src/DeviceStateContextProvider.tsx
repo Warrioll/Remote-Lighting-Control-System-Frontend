@@ -26,19 +26,27 @@ export function DeviceStateProvider({ children }:DeviceStateProviderProps ) {
         });
 
         socket.on('connect', () => {
-        console.log('Connected:', socket.id);
+        //console.log('Connected:', socket.id);
     });
 
     socket.on('connect_error', (err) => {
         console.error('Connection error:', err.message);
     });
 
+    socket.on('init', (deviceStatus)=>{
+      console.log('init!', )
+      setSwitches(deviceStatus.switchesStatus)
+      setIsConnected(deviceStatus.isConnected)
+    })
+
     socket.on('switch-toggle', ({switchId, switchState})=>{
-      
-        const newSwitches = [...switches]
-        newSwitches[switchId-1]=switchState
         
-        setSwitches(newSwitches)
+        
+        setSwitches((prev)=>{
+          const newSwitches = [...prev]
+          newSwitches[switchId-1]=switchState
+          return  newSwitches
+        })
     })
 
     socket.on('device-connection', ({isConnected})=>{
@@ -50,7 +58,7 @@ export function DeviceStateProvider({ children }:DeviceStateProviderProps ) {
 
         setSocket(socket);
         return () => {socket.disconnect()};
-    }, [switches]);
+    }, []);
 
 
 

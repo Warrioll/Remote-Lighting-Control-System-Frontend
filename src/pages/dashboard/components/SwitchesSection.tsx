@@ -27,28 +27,28 @@ export default function SwitchesSection(//{socket}: SwitchesSectionProps
   
     const { isConnected, setIsConnected, socket } = useDeviceState()
 
-  const getEsp32Status = async () => {
-    try {
-      toast.promise(
-        async () => {
-          const data = await getDeviceStatus();
-          setDeviceStatus({ ...data });
-          // if (deviceStatus?.isConnected) {
-          //   toast.success(() => <b>Device is connected!</b>);
-          // } else {
-          //   toast.error(() => <b>Device is not connected!</b>);
-          // }
-        },
-        {
-          loading: 'Checking connection to device...',
-          success: <b>Device check done</b>,
-          error: <b>Could not check device status</b>,
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getEsp32Status = async () => {
+  //   try {
+  //     toast.promise(
+  //       async () => {
+  //         const data = await getDeviceStatus();
+  //         setDeviceStatus({ ...data });
+  //         // if (deviceStatus?.isConnected) {
+  //         //   toast.success(() => <b>Device is connected!</b>);
+  //         // } else {
+  //         //   toast.error(() => <b>Device is not connected!</b>);
+  //         // }
+  //       },
+  //       {
+  //         loading: 'Checking connection to device...',
+  //         success: <b>Device check done</b>,
+  //         error: <b>Could not check device status</b>,
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
 
 
