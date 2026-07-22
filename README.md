@@ -15,6 +15,31 @@ This repository contains the frontend application of the **Remote Lighting Contr
 
 ---
 
+## Application Preview
+
+The web application provides a user interface for remote lighting control, system monitoring, and real-time visualization of data received from IoT devices.
+
+### Desktop View
+
+![Login page](docs/loginPage.jpg)
+
+![Dashboard - Lighting Control Panel](docs/dashboard.jpg)
+
+![Dashboard - Charts ](docs/charts.jpg)
+
+### Mobile View
+
+
+|  |  |
+|------------|-------------|
+ ![Login Page - Mobile Application View](docs/loginPageMobileView.jpg)  |   ![Dashboard - Mobile Application View](docs/dashboardMobileView.jpg)|
+
+
+
+
+
+
+
 ## Requirements
 
 Before running the application, ensure the following software is installed and running:
