@@ -1,34 +1,67 @@
-# Mantine Vite template
+# Remote Lighting Control System – Frontend
 
-## Features
+This repository contains the frontend application of the **Remote Lighting Control System**. It provides a web interface for monitoring the system and remotely controlling lighting devices through the backend API.
 
-This template comes with the following features:
+> **Note**
+>
+> This project was originally developed as part of a university engineering project and has since been further improved and refactored.
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+---
 
-## npm scripts
+## Related Repositories
 
-## Build and dev scripts
+- 🔗 **Backend:** [https://github.com/Warrioll/Remote-Lighting-Control-System-Backend](#)
+- 🔗 **IoT Firmware:** [https://github.com/Warrioll/Remote-Lighting-Control-System-IoT-Firmware](#)
 
-- `dev` – start development server
-- `build` – build production version of the app
-- `preview` – locally preview production build
+---
 
-### Testing scripts
+## Requirements
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `vitest` – runs vitest tests
-- `vitest:watch` – starts vitest watch
-- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
+Before running the application, ensure the following software is installed and running:
 
-### Other scripts
+- Node.js (recommended version **25**)
+- Backend application
+- MQTT Broker
+- MongoDB
 
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+---
+
+## Getting Started
+
+### 1. Configure environment variables
+
+Create a `.env` file in the project root based on:
+
+```text
+.env.frontend.example
+```
+
+Fill in all required environment variables.
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Technologies
+
+- React
+- Vite
+- TypeScript
+- REST API
+- WebSocket
